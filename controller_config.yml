@@ -1,0 +1,13 @@
+---
+- name: Configure Automation Controller
+  hosts: controller
+  vars:
+    controller_hostname: https://ansible-ctrl.example.com
+    controller_username: admin
+    controller_password: "{{ secret_controller_admin_password }}"
+    controller_validate_certs: false
+  collections:
+    - ansible.controller
+    - redhat_cop.controller_configuration
+  roles:
+    - redhat_cop.controller_configuration.dispatch
