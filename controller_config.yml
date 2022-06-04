@@ -1,6 +1,8 @@
 ---
 - name: Configure Automation Controller
   hosts: controller
+  vars_files:
+    - vars/config_credentials.yml 
   vars:
     controller_hostname: https://ansible-ctrl.example.com
     controller_username: admin
