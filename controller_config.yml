@@ -1,8 +1,6 @@
 ---
 - name: Configure Automation Controller
   hosts: controller
-  vars_files:
-    - vars/config_credentials.yml 
   vars:
     controller_hostname: https://ansible-ctrl.example.com
     controller_username: admin
@@ -14,8 +12,6 @@
           6564393362343763340a633831356331633131643464386564363138616264643733396139663138
           6437
     controller_validate_certs: false
-  collections:
-    - ansible.controller
-    - redhat_cop.controller_configuration
+  
   roles:
     - redhat_cop.controller_configuration.dispatch
