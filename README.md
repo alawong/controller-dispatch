@@ -8,9 +8,9 @@ This lies in a separate repository tp prevent an issue when running the playbook
 
 ### Prerequirements
 
-. Ansible Automation Platform 2 installed
-. Bastion node with SSH access to Automation Controller hosts
-. Execution environment downloaded with ansible.controller and redhat_cop.controller configuration collections installed, OR bastion node with ansible.controller and redhat_cop.controller configuration collections installed. [EE used](https://github.com/alawong/ee-aap-utils)
+* Ansible Automation Platform 2 installed
+* Bastion node with SSH access to Automation Controller hosts
+* Execution environment downloaded with ansible.controller and redhat_cop.controller configuration collections installed, OR bastion node with ansible.controller and redhat_cop.controller configuration collections installed. [EE used](https://github.com/alawong/ee-aap-utils)
 
 ### Initial Controller Configuration and Configuration as Code Setup
 
