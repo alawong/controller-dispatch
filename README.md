@@ -34,6 +34,8 @@ This lies in a separate repository tp prevent an issue when running the playbook
 
 6. Run the `controller_config.yml` playbook using ansible-navigator and the Execution Environment. This will require a vault password to use any secrets.
 
-    `ansible-navigator run controller_config.yml --eei << EE name >> --vault-password-file=~/password.txt -m stdout --playbook-artifact-enable false -vvv`
+    `ansible-navigator run controller_config.yml --eei << EE name >> --ask-vault-pass -m stdout --playbook-artifact-enable false -vvv`
 
 7. Copy the webhook URL and key for each organisation workflow template and add them into the webhook details for their respective repositories, using the `application/json` encoding
+
+8. Push the Execution Environment to Private Automation Hub with the name `controller-ee-rhel8:v1.0`.
