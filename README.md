@@ -2,40 +2,38 @@
 
 AAP2 Automation Controller Dispatch playbook, that runs configuration updates for Automation Controller.
 
-This lies in a separate repository tp prevent an issue when running the playbook from the originally centralised configuration repository, which held the dispatch playbook as well as the base configuration. The existence of variables, e.g. users, within the central repository caused the same variables found in other organisation repositories to be ignored.
+This lies in a separate repository to our default organisation's, as the existence of variables, e.g. users, within the default organisation's repository caused the same variables found in other organisation's repositories to be ignored when running the dispatch playbook.
 
 ## Getting Started
 
-### Prerequirements
+### Prerequisites
 
 * Ansible Automation Platform 2 installed
 * Bastion node with SSH access to Automation Controller hosts
-* Execution environment downloaded with ansible.controller and redhat_cop.controller configuration collections installed, OR bastion node with ansible.controller and redhat_cop.controller configuration collections installed. [EE used](https://github.com/alawong/ee-aap-utils)
+* Execution environment downloaded with ansible.controller and redhat_cop.controller configuration collections installed, OR bastion node with ansible.controller and redhat_cop.controller_configuration collections installed. [EE used](https://github.com/alawong/ee-aap-utils). It is highly recommended that an EE is used, as this EE will be used within the configuration as code workflow templates too.
 
 ### Initial Controller Configuration and Configuration as Code Setup
 
 1. SSH into the bastion node.
 
-2. Clone the controller-org-default repository into the bastion node. This contains all of the default configuration for Automation Controller
+2. Clone the controller-dispatch and controller-org-default repository. This contains the configuration playbook `controller_config.yml` and all of the default configuration for Automation Controller, which includes organisations and their configuration as code workflows.
 
     `git clone https://github.com/alawong/controller-org-default.git`
+    `git clone https://github.com/alawong/controller-dispatch.git`
 
-3. Move the `controller_config.yml` playbook into the controller-org-default directory. Change values as needed.
-    `mv controller-dispatch/controller_config.yml controller-org-default/`
-
-4. Change directory into the controller-org-default directory
-    `cd controller-org-default`
-
-5. Create an inventory with a host pointing to the controller
+3. Edit the inventory within `controller-org-default` to point to your controller host
 
     ```bash
     controller ansible_host=<< controller_hostname >> ansible_connection=local
     ```
 
-6. Run the `controller_config.yml` playbook using ansible-navigator and the Execution Environment. This will require a vault password to use any secrets.
+4. Change directory into the controller-dispatch directory
+    `cd controller-dispatch`
 
-    `ansible-navigator run controller_config.yml --eei << EE name >> --ask-vault-pass -m stdout --playbook-artifact-enable false -vvv`
+5. Run the `controller_config.yml` playbook using ansible-navigator and the Execution Environment. This will also require a vault password to decrypt Ansible Vault encrypted secrets.
 
-7. Copy the webhook URL and key for each organisation workflow template and add them into the webhook details for their respective repositories, using the `application/json` encoding
+    `ansible-navigator run controller_config.yml --eei localhost/ee-aap-utils:v1.0 --ask-vault-pass -m stdout --playbook-artifact-enable false -vvv -i ../controller-org-default/inventory`
 
-8. Push the Execution Environment to Private Automation Hub with the name `controller-ee-rhel8:v1.0`.
+6. Copy the webhook URL and key for each organisation workflow template and add them into the webhook details for their respective repositories workflows, using the `application/json` encoding
+
+7. Push the Execution Environment to Private Automation Hub with the name `ee-aap-utils:v1.0` (what is currently used by Automation Controller).
